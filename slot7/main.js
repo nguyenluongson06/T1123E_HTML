@@ -48,10 +48,20 @@ button.addEventListener("click", function() {
     //get all input items to a HTMLCollection
     var input_list = document.getElementsByClassName("input");
     var input_value = [];
-    //get value of each input then push into a list
+
+    //get value of each input then push into a list IF the value meets the requirement
     for (let element of input_list) {
         var number = parseInt(element.value);
-        input_value.push(number);
+        if (0 <= number && number <= 45 && !input_value.includes(number)){
+            input_value.push(number);
+        }
+    }
+
+    //if all values does not meet the requirement
+    if (input_value.length != 6) {
+        //then alert and return
+        alert("Số bạn nhập không hợp lệ, vui lòng nhập lại");
+        return;
     }
 
     //generate the result array

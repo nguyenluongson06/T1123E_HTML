@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="grid.css">
+    <link rel="stylesheet" href="layout.css">
+</head>
+<body>
+    <div class="container">
+        <ul id="grid">
+        </ul>
+    </div>
+    <div class="container">
+        <ul id="pageList">
+        </ul>
+    </div>
+    <script type="text/javascript">
+        function loadProducts(x) {
+            var skip = (x-1)*12;
+            var url = `https://dummyjson.com/products?limit=12&skip=${skip}`;
+            var total = 0;
+            var limit = 12;
+            var current_page = 1;
+            fetch(url).then(js => js.json())
+            .then(data=>{
+                var list = data.products;
+                total = data.total;
+                current_page = data.skip + 1;
+                var grid_html = ``;
+                list.forEach(element => {
+                    var item_html = `<li class="box">
+                <div class="item">
+                    <img src="${element.thumbnail}" alt="">
+                    <h2>${element.title}</h2>
+                    <p>$${element.price}</p>
+                </div>
+            </li>`;
+                    grid_html += item_html;
+                });
+                document.getElementById("grid").innerHTML = grid_html;
+
+                var total_pages = Math.floor(total/limit);
+                if (total % limit != 0) total_pages++;
+                var page_counter_html = ``;
+                for (var i = 1; i <= total_pages; i++){
+                    if (i == current_page) {
+                        page_counter_html += `<li class="page active"><a href="#" onclick="loadProducts(${i})">${i}</a></li>`;
+                    } else {
+                        page_counter_html += `<li class="page"><a href="#" onclick="loadProducts(${i})">${i}</a></li>`
+                    }
+                }
+                document.getElementById("pageList").innerHTML = page_counter_html;
+            })
+        }
+        loadProducts(1)
+    </script>
+</body>
+</html>
