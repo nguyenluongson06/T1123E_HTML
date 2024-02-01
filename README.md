@@ -1,1 +1,1 @@
-Currently deploying slot2/index.html
+Currently deploying weather-forecast/index.html
